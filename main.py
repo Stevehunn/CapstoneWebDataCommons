@@ -65,26 +65,26 @@ custom_css_content_2023 = """
 
 # List of Schema available
 top_20_target_classes = [
-    "schema:ListItem",
-    "schema:ImageObject",
-    "schema:BreadcrumbList",
-    "schema:Organization",
-    "schema:WebPage",
-    "schema:SearchAction",
-    "schema:Offer",
-    "schema:Person",
-    "schema:ReadAction",
-    "schema:Product",
-    "schema:EntryPoint",
-    "schema:PostalAddress",
-    "schema:Article",
-    "schema:WebSite",
-    "schema:CollectionPage",
-    "schema:NewsArticle",
-    "schema:SiteNavigationElement",
-    "schema:ContactPoint",
-    "schema:Rating",
-    "schema:Place",
+    "ListItem",
+    "ImageObject",
+    "BreadcrumbList",
+    "Organization",
+    "WebPage",
+    "SearchAction",
+    "Offer",
+    "Person",
+    "ReadAction",
+    "Product",
+    "EntryPoint",
+    "PostalAddress",
+    "Article",
+    "WebSite",
+    "CollectionPage",
+    "NewsArticle",
+    "SiteNavigationElement",
+    "ContactPoint",
+    "Rating",
+    "Place",
 ]
 
 class Node:
@@ -174,15 +174,41 @@ def content_sidebar():
     with st.sidebar:
         selected_tab = option_menu(
             menu_title = "Summary",
-            options=["Welcome page","Representation graphic","New Data use"],
+            options=["Welcome page","Data from 2022","New Data from 2023","Comparison between the two dataset"],
         )
     if selected_tab =="Welcome page":
         content_welcome()
-    if selected_tab =="Representation graphic":
+    if selected_tab =="Data from 2022":
         content_2022()
-    if selected_tab =="New Data use":
+    if selected_tab =="New Data from 2023":
         content_2023()
+    if selected_tab =="Comparison between the two dataset":
+        content_comparison()
 
+
+# Welcome page Content
+def content_welcome():
+    
+    # Display custom CSS
+    st.markdown(custom_css_welcome_page, unsafe_allow_html=True)
+
+    # Content
+    st.title("""TheMiKroloG: The Microdata Knowledge Graph""")
+    st.markdown("[Previous demo in Dash](https://schema-obs-demo.onrender.com/) ")
+
+# Comparison page Content
+def content_comparison():
+
+    # Display custom CSS
+    st.markdown(custom_css_welcome_page, unsafe_allow_html=True)
+
+    # Content
+    st.title("""In this page we compare the two Dataset from 2022 and 2023""")
+
+
+
+
+    
 # 2022 Analyse page Content 
 def content_2022():
     
@@ -193,7 +219,6 @@ def content_2022():
     st.title("""Schema.org annotations observatory in 2022""")
     st.write("### Deep dive into WebDataCommons JSON-LD markup")
     st.markdown("---")
-    st.markdown("[Previous demo in Dash](https://schema-obs-demo.onrender.com/) ")
     st.markdown(
         """
         Per-class top-10 property combinations.
@@ -202,13 +227,18 @@ def content_2022():
         
         """
     )
-    select=st.selectbox("",options=top_20_target_classes)
+    select=st.selectbox("",top_20_target_classes)
+    select="schema\:"+select
+    st.write('You selected:', select)
+
 
     st.markdown(
         """
         In the following sunburst plot, the count of typed entities is displayed through the 'value' attribute.
         """
     )
+
+    st.markdown("---")
 
     figure=px.sunburst(
         data_plotly_sunburst,
@@ -239,52 +269,40 @@ def content_2023():
     st.title("""Schema.org annotations observatory in 2023""")
     st.write("### Deep dive into WebDataCommons JSON-LD markup")
     st.markdown("---")
-    st.markdown("[Previous demo in Dash](https://schema-obs-demo.onrender.com/) ")
-    st.markdown(
+   
+    col1, col2 = st.columns(2)
+
+    with col1:
+        figure=px.sunburst(
+            data_plotly_sunburst,
+            ids="ids",
+            names="names",
+            parents="parents",
+            values="values",
+        )
+        style={
+            "padding": 10,
+            "width": "100%",
+            # "height": "70vh",
+            # "width": "70vw",
+            "display": "inline-block",
+            "vertical-align": "right",
+        },
+
+        # Display the Plotly figure using st.plotly_chart
+        st.plotly_chart(figure, use_container_width=True, style=style)
+
+    with col2:
+        st.markdown(
         """
         Per-class top-10 property combinations.
         In the following upset plots, you can select a Schema.org class and display the most used property combinations (top-10).
         All these 776 plots have been rendered based on the Schema.org characteristic sets we pre-computed and made available at [https://zenodo.org/records/8167689](https://zenodo.org/records/8167689)
         
         """
-    )
-    select=st.selectbox("",options=top_20_target_classes)
-
-    st.markdown(
-        """
-        In the following sunburst plot, the count of typed entities is displayed through the 'value' attribute.
-        """
-    )
-
-    figure=px.sunburst(
-        data_plotly_sunburst,
-        ids="ids",
-        names="names",
-        parents="parents",
-        values="values",
-    )
-    style={
-        "padding": 10,
-        "width": "100%",
-        # "height": "70vh",
-        # "width": "70vw",
-        "display": "inline-block",
-        "vertical-align": "right",
-    },
-
-    # Display the Plotly figure using st.plotly_chart
-    st.plotly_chart(figure, use_container_width=True, style=style)
-
-
-# Welcome page Content
-def content_welcome():
-    
-    # Display custom CSS
-    st.markdown(custom_css_welcome_page, unsafe_allow_html=True)
-
-    # Content
-    st.title("""Hello everyone""")
-    st.write("""test background """)
+        )
+        select2=st.selectbox("",top_20_target_classes)
+        st.write('You selected:', select2)
 
 # Run the app
 if __name__ == '__main__':
