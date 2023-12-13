@@ -2,7 +2,8 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import plotly.express as px
 import json
-import glob 
+import glob
+import re
 
 # Custom CSS
 custom_css = """
@@ -13,7 +14,6 @@ custom_css = """
     }
 </style>
 """
-
 
 # List of Schema available
 top_20_target_classes = [
@@ -65,15 +65,21 @@ def item_generator(json_input, lookup_key, depth=None):
         for item in json_input:
             yield from item_generator(item, lookup_key, depth)
 
+def extraire_contenu_apres_backslash(ma_ligne):
+    # Regex pour supprimer tout le contenu avant le dernier caractère '\'
+    nouveau_contenu = re.sub(r'^.*\\', '', ma_ligne)
+    return nouveau_contenu
+
+def construire_chemin_complet(contenu_apres_backslash):
+    regexSelect = contenu_apres_backslash +"_plot.svg"
+    regexSelect ="assets/plots//" +regexSelect
+
+    return regexSelect
+
 target_classes = []
-for file in glob.glob("assets/plots/*.svg"):
-    fname = file.split("assets/plots/")
-    if len(fname) > 1:
-        fname = fname[1]
-    else:
-        # Handle the case where the substring is not found
-        fname = "default_value"  # Replace "default_value" with the appropriate default value or handle the situation accordingly
-    cname = fname.split("_plot.svg")[0]
+for file in glob.glob("""assets/plots//*.svg"""):
+    fname = file.split("""assets/plots//""")[0]
+    cname = fname.split("""_plot.svg""")[0]
     target_classes.append(f"schema:{cname}")
 target_classes.sort()
 
@@ -146,13 +152,13 @@ def content_welcome():
     st.title("""TheMiKroloG: The Microdata Knowledge Graph""")
     st.markdown("[Previous demo in Dash](https://schema-obs-demo.onrender.com/) ")
 
+   
+
 # Comparison page Content
 def content_comparison():
 
-    
-
     # Content
-    st.title("""In this page we compare the two Dataset from 2022 and 2023""")
+    st.title("""In this page we compare the two Dataset from 2022 and 2023""") 
 
 
 
@@ -161,7 +167,6 @@ def content_comparison():
 # 2022 Analyse page Content 
 def content_2022():
     
-
     # Content
     st.title("""Schema.org annotations observatory in 2022""")
     st.write("### Deep dive into WebDataCommons JSON-LD markup")
@@ -174,11 +179,16 @@ def content_2022():
         
         """
     )
-    select=st.selectbox("",top_20_target_classes)
-    select="schema\:"+select
-    st.write('You selected:', select)
-
-
+    select=st.selectbox("",target_classes)
+    #nomFichierAOuvrir = "assets/plots/3DModel_plot.svg"
+    #st.image(nomFichierAOuvrir)
+    #st.write('chemin complet nomFichierAOuvir:',nomFichierAOuvrir)
+    st.markdown("---")
+    regexSelect =extraire_contenu_apres_backslash(select)
+    regexSelect = regexSelect +"_plot.svg"
+    regexSelect ="assets/plots//" +regexSelect
+    st.image(regexSelect)
+    st.markdown("---")
     st.markdown(
         """
         In the following sunburst plot, the count of typed entities is displayed through the 'value' attribute.
@@ -246,8 +256,16 @@ def content_2023():
         
         """
         )
-        select2=st.selectbox("",top_20_target_classes)
-        st.write('You selected:', select2)
+        select2=st.selectbox("",target_classes)
+        #nomFichierAOuvrir = "assets/plots/3DModel_plot.svg"
+        #st.image(nomFichierAOuvrir)
+        #st.write('chemin complet nomFichierAOuvir:',nomFichierAOuvrir)
+        st.markdown("---")
+        regexSelect =extraire_contenu_apres_backslash(select2)
+        regexSelect = regexSelect +"_plot.svg"
+        regexSelect ="assets/plots//" +regexSelect
+        st.image(regexSelect)
+        st.markdown("---")
 
 # Run the app
 if __name__ == '__main__':
