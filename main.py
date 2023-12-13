@@ -5,57 +5,9 @@ import json
 import glob 
 
 # Custom CSS
-custom_css_welcome_page = """
+custom_css = """
 <style>
     /* Your custom CSS goes here */
-    body {
-        background-color: #f0f0f0;
-    }
-    h1 {
-        color: blue;
-    }
-    .st-emotion-cache-1y4p8pa {
-        max-width: 70rem
-    }
-</style>
-"""
-# Custom CSS
-custom_css_sidebar = """
-<style>
-    /* Your custom CSS goes here */
-    body {
-        background-color: #f0f0f0;
-    }
-    .st-emotion-cache-1y4p8pa {
-        max-width: 70rem
-    }
-</style>
-"""
-# Custom CSS
-custom_css_content_2022 = """
-<style>
-     /* Your custom CSS goes here */
-    body {
-        background-color: #f0f0f0;
-    }
-    h1 {
-        color: red;
-    }
-    .st-emotion-cache-1y4p8pa {
-        max-width: 70rem
-    }
-</style>
-"""
-# Custom CSS
-custom_css_content_2023 = """
-<style>
-     /* Your custom CSS goes here */
-    body {
-        background-color: #f0f0f0;
-    }
-    h1 {
-        color: green;
-    }
     .st-emotion-cache-1y4p8pa {
         max-width: 70rem
     }
@@ -167,8 +119,9 @@ def main():
 
 # Side Content
 def content_sidebar():
+
     # Display custom CSS
-    st.markdown(custom_css_sidebar, unsafe_allow_html=True)
+    st.markdown(custom_css, unsafe_allow_html=True)
 
     st.sidebar.title("Here you can select different operation realise on the data")
     with st.sidebar:
@@ -188,9 +141,6 @@ def content_sidebar():
 
 # Welcome page Content
 def content_welcome():
-    
-    # Display custom CSS
-    st.markdown(custom_css_welcome_page, unsafe_allow_html=True)
 
     # Content
     st.title("""TheMiKroloG: The Microdata Knowledge Graph""")
@@ -199,8 +149,7 @@ def content_welcome():
 # Comparison page Content
 def content_comparison():
 
-    # Display custom CSS
-    st.markdown(custom_css_welcome_page, unsafe_allow_html=True)
+    
 
     # Content
     st.title("""In this page we compare the two Dataset from 2022 and 2023""")
@@ -212,8 +161,6 @@ def content_comparison():
 # 2022 Analyse page Content 
 def content_2022():
     
-    # Display custom CSS
-    st.markdown(custom_css_content_2022, unsafe_allow_html=True)
 
     # Content
     st.title("""Schema.org annotations observatory in 2022""")
@@ -262,8 +209,6 @@ def content_2022():
 # 2023 Analyse page Content 
 def content_2023():
     
-    # Display custom CSS
-    st.markdown(custom_css_content_2023, unsafe_allow_html=True)
 
     # Content
     st.title("""Schema.org annotations observatory in 2023""")
