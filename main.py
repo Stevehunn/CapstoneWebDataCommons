@@ -77,18 +77,39 @@ def extraire_contenu_apres_backslash(ma_ligne):
     nouveau_contenu = re.sub(r'^.*\\', '', ma_ligne)
     return nouveau_contenu
 
-def construire_chemin_complet(contenu_apres_backslash):
-    regexSelect = contenu_apres_backslash +"_plot.svg"
-    regexSelect ="assets/plots//" +regexSelect
+def getCheminForImage(nomfichier):
+    regexSelect = extraire_contenu_apres_backslash(nomfichier)
+    # Utiliser split pour séparer la chaîne en fonction de ":"
+    parts = regexSelect.split(":")
 
-    return regexSelect
+    # Concaténer les parties avec le format souhaité
+    result = f"assets/plots/{parts[1]}_plot.svg"
+    return result
 
+# 
 target_classes = []
-for file in glob.glob("""assets/plots//*.svg"""):
-    fname = file.split("""assets/plots//""")[0]
-    cname = fname.split("""_plot.svg""")[0]
+for file in glob.glob("assets/plots/*.svg"):
+    # Utilisez split pour séparer le chemin du fichier
+    parts = file.split("/")
+    
+    # Extrait le premier élément après "assets"
+    fname = parts[1]  # parts[0] est "assets", parts[1] est "plots"
+
+    parts2 = fname.split("plots")
+    # Extrait le premier élément après "plots"
+    newFname =parts2[1]
+
+    # Utiliser split pour séparer la chaîne en fonction de "\"
+    parts = newFname.split("\\")
+
+    # Concaténer les parties avec "schema:"
+    newFname ="".join(parts[1:])
+
+    # Supprime l'extension ".svg"
+    cname = newFname.split("_plot.svg")[0]
+    
+    # Ajoute à la liste avec le préfixe "schema:"
     target_classes.append(f"schema:{cname}")
-target_classes.sort()
 
 # sunburst
 data_plotly_sunburst = {"ids": [], "names": [], "parents": [], "values": []}
@@ -200,49 +221,30 @@ def content_comparison():
     st.title("""In this page we compare the two Dataset from 2022 and 2023""") 
 
     select=st.selectbox("",target_classes)
-    regexSelect =extraire_contenu_apres_backslash(select)
-    st.write("Evolution of the ",regexSelect," between 2022 and 2023")
-    regexSelect = regexSelect +"_plot.svg"
-    regexSelect ="assets/plots//" +regexSelect
+    result=getCheminForImage(select)
 
     coll1, coll2 = st.columns(2)
-
     with coll1:
-        st.image(regexSelect)
-   
-
+        st.image(result)
 
     with coll2:
-        st.image(regexSelect)
- 
+        st.image(result)
 
     col1, col2 , col3= st.columns(3)
-
     with col1:
         st.write("Average:5")
         st.write("Coverage:3")
         st.write("Count:100")
 
-    
-    
     with col2:
         st.write("Average evolution: 20%")
         st.write("Coverage evolution: 30%")
         st.write("Count evolution:100%")
         
-
-
     with col3:
         st.write("Average:7")
         st.write("Coverage:5")
         st.write("Count:200")
-
-    
-    
-
-
-
-
     
 # 2022 Analyse page Content 
 def content_2022():
@@ -262,11 +264,13 @@ def content_2022():
     #nomFichierAOuvrir = "assets/plots/3DModel_plot.svg"
     #st.image(nomFichierAOuvrir)
     #st.write('chemin complet nomFichierAOuvir:',nomFichierAOuvrir)
+    #regexTargetClasse = extraire_contenu_apres_backslash(target_classes)
+    #regexTargetClasse
     select=st.selectbox("",target_classes)
-    regexSelect =extraire_contenu_apres_backslash(select)
-    regexSelect = regexSelect +"_plot.svg"
-    regexSelect ="assets/plots//" +regexSelect
-    st.image(regexSelect)
+    result=getCheminForImage(select)
+    st.image(result)
+
+
     st.markdown("---")
     st.markdown(
         """
@@ -328,11 +332,9 @@ def content_2023():
         
         """
         )
-        select2=st.selectbox("",target_classes)
-        regexSelect =extraire_contenu_apres_backslash(select2)
-        regexSelect = regexSelect +"_plot.svg"
-        regexSelect ="assets/plots//" +regexSelect
-        st.image(regexSelect)
+        select=st.selectbox("",target_classes)
+        result=getCheminForImage(select)
+        st.image(result)
         st.markdown("---")
 
 # Run the app
