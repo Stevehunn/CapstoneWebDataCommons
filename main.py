@@ -10,7 +10,7 @@ custom_css = """
 <style>
     /* Your custom CSS goes here */
     .st-emotion-cache-1y4p8pa {
-        max-width: 70rem
+        max-width: 95%
     }
 </style>
 """
@@ -133,7 +133,7 @@ def content_sidebar():
     with st.sidebar:
         selected_tab = option_menu(
             menu_title = "Summary",
-            options=["Welcome page","Data from 2022","New Data from 2023","Comparison between the two dataset"],
+            options=["Welcome page","Data from 2022","New Data from 2023","Comparison between the two dataset","New style"],
         )
     if selected_tab =="Welcome page":
         content_welcome()
@@ -143,6 +143,8 @@ def content_sidebar():
         content_2023()
     if selected_tab =="Comparison between the two dataset":
         content_comparison()
+    if selected_tab =="New style":
+        content_new_style()
 
 
 # Welcome page Content
@@ -150,15 +152,86 @@ def content_welcome():
 
     # Content
     st.title("""TheMiKroloG: The Microdata Knowledge Graph""")
-    st.markdown("[Previous demo in Dash](https://schema-obs-demo.onrender.com/) ")
 
-   
+    st.write("## Introduction")
+    st.write("""Welcome to an immersive experience that transcends the boundaries of time! In this cutting-edge technical demo, we invite you to explore the rich tapestry of web data collected through the "Common Crawl" initiative over two distinct years. Embark on a journey that unveils the evolution of the digital landscape, showcasing the power of longitudinal data analysis.""")
+    st.markdown("[Previous demo in Dash](https://schema-obs-demo.onrender.com/) ")
+    st.markdown("[Article link](https://hal.science/hal-04250523/document)")
+    st.write("## About Common Crawl")
+    st.write("Common Crawl is a monumental effort to index and archive the vast expanse of the World Wide Web. Through meticulous crawling, it captures web pages, providing a comprehensive snapshot of the internet's content at different points in time. Leveraging the open nature of Common Crawl data, our research delves into the depths of this treasure trove, extracting valuable insights that bridge the gap between past and present.")
+    st.write("## Key Features")
+    st.write("""1. Temporal Evolution Analysis
+Dive into a comparative analysis of web content spanning two different years. Witness how the digital landscape has transformed, identify emerging trends, and understand the dynamics that have shaped the online world over time.
+
+2. Data Visualization Showcase
+Experience the power of data visualization as we present captivating representations of key trends and patterns. Our interactive visualizations bring to life the wealth of information hidden within the Common Crawl dataset, making complex data accessible and engaging.
+
+3. Innovative Research Findings
+Discover groundbreaking research findings derived from the analysis of Common Crawl data. Our team has unearthed compelling correlations, identified influential factors, and examined the nuances that define the evolution of web content over the selected time periods.""")
+    st.write("## How to Navigate")
+    st.write("""Temporal Selection: Choose the years you wish to explore using the interactive timeline.
+Category Insights: Delve into specific content categories to uncover niche trends.
+Data Filters: Tailor your exploration by applying filters based on keywords, domains, or geographical regions.""")
+    st.write("## Join Us on this Journey")
+    st.write("""Embark on a captivating exploration of the internet's history. Whether you are a researcher, data enthusiast, or simply curious about the evolution of the digital landscape, our Web Data Time Travel Demo promises a unique and enlightening experience.""")
+    st.write("## Begin Your Journey")
+    st.write("""Click the Summary menu in the side to commence your exploration of Common Crawl data across time. Uncover the past, understand the present, and glimpse into the future of the World Wide Web.""")
+
+def content_new_style():
+    loadTreemapImage ="assets/images/Treemap.png"
+    st.write("Treemap")
+    st.image(loadTreemapImage)
+    st.markdown("---")
+    loadVerticalTableAndChart ="assets/images/VerticalTableAndChart.png"
+    st.write("Vertical Table and Chart (Histogramme)")
+    st.image(loadVerticalTableAndChart)
 
 # Comparison page Content
 def content_comparison():
 
     # Content
     st.title("""In this page we compare the two Dataset from 2022 and 2023""") 
+
+    select=st.selectbox("",target_classes)
+    regexSelect =extraire_contenu_apres_backslash(select)
+    st.write("Evolution of the ",regexSelect," between 2022 and 2023")
+    regexSelect = regexSelect +"_plot.svg"
+    regexSelect ="assets/plots//" +regexSelect
+
+    coll1, coll2 = st.columns(2)
+
+    with coll1:
+        st.image(regexSelect)
+   
+
+
+    with coll2:
+        st.image(regexSelect)
+ 
+
+    col1, col2 , col3= st.columns(3)
+
+    with col1:
+        st.write("Average:5")
+        st.write("Coverage:3")
+        st.write("Count:100")
+
+    
+    
+    with col2:
+        st.write("Average evolution: 20%")
+        st.write("Coverage evolution: 30%")
+        st.write("Count evolution:100%")
+        
+
+
+    with col3:
+        st.write("Average:7")
+        st.write("Coverage:5")
+        st.write("Count:200")
+
+    
+    
 
 
 
@@ -179,11 +252,10 @@ def content_2022():
         
         """
     )
-    select=st.selectbox("",target_classes)
     #nomFichierAOuvrir = "assets/plots/3DModel_plot.svg"
     #st.image(nomFichierAOuvrir)
     #st.write('chemin complet nomFichierAOuvir:',nomFichierAOuvrir)
-    st.markdown("---")
+    select=st.selectbox("",target_classes)
     regexSelect =extraire_contenu_apres_backslash(select)
     regexSelect = regexSelect +"_plot.svg"
     regexSelect ="assets/plots//" +regexSelect
@@ -207,19 +279,15 @@ def content_2022():
     style={
         "padding": 10,
         "width": "100%",
-        # "height": "70vh",
-        # "width": "70vw",
         "display": "inline-block",
         "vertical-align": "right",
     },
-
+    
     # Display the Plotly figure using st.plotly_chart
     st.plotly_chart(figure, use_container_width=True, style=style)
 
 # 2023 Analyse page Content 
 def content_2023():
-    
-
     # Content
     st.title("""Schema.org annotations observatory in 2023""")
     st.write("### Deep dive into WebDataCommons JSON-LD markup")
@@ -236,10 +304,7 @@ def content_2023():
             values="values",
         )
         style={
-            "padding": 10,
             "width": "100%",
-            # "height": "70vh",
-            # "width": "70vw",
             "display": "inline-block",
             "vertical-align": "right",
         },
@@ -257,10 +322,6 @@ def content_2023():
         """
         )
         select2=st.selectbox("",target_classes)
-        #nomFichierAOuvrir = "assets/plots/3DModel_plot.svg"
-        #st.image(nomFichierAOuvrir)
-        #st.write('chemin complet nomFichierAOuvir:',nomFichierAOuvrir)
-        st.markdown("---")
         regexSelect =extraire_contenu_apres_backslash(select2)
         regexSelect = regexSelect +"_plot.svg"
         regexSelect ="assets/plots//" +regexSelect
