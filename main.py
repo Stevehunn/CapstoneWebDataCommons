@@ -163,7 +163,7 @@ def content_welcome():
     st.write("## Introduction")
     st.write("""Welcome to an immersive experience that transcends the boundaries of time! In this cutting-edge technical demo, we invite you to explore the rich tapestry of web data collected through the "Common Crawl" initiative over two distinct years. Embark on a journey that unveils the evolution of the digital landscape, showcasing the power of longitudinal data analysis.""")
     st.markdown("[Previous demo in Dash](https://schema-obs-demo.onrender.com/) ")
-    st.markdown("[Article link](https://hal.science/hal-04250523/document)")
+    st.markdown("Link of the article relate to this demo : [Article link](https://hal.science/hal-04250523/document)")
     st.write("## About Common Crawl")
     st.write("Common Crawl is a monumental effort to index and archive the vast expanse of the World Wide Web. Through meticulous crawling, it captures web pages, providing a comprehensive snapshot of the internet's content at different points in time. Leveraging the open nature of Common Crawl data, our research delves into the depths of this treasure trove, extracting valuable insights that bridge the gap between past and present.")
     st.write("## Key Features")
