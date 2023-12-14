@@ -9,6 +9,13 @@ import re
 custom_css = """
 <style>
     /* Your custom CSS goes here */
+   [data-testid=stImage]{
+            text-align: center;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+    }
     .st-emotion-cache-1y4p8pa {
         max-width: 95%
     }
@@ -129,11 +136,11 @@ def content_sidebar():
     # Display custom CSS
     st.markdown(custom_css, unsafe_allow_html=True)
 
-    st.sidebar.title("Here you can select different operation realise on the data")
+    st.sidebar.title("Here you can navigate throught the demo")
     with st.sidebar:
         selected_tab = option_menu(
             menu_title = "Summary",
-            options=["Welcome page","Data from 2022","New Data from 2023","Comparison between the two dataset","New style"],
+            options=["Welcome page","Data from 2022","New Data from 2023","Comparison between the two dataset","New style of chart"],
         )
     if selected_tab =="Welcome page":
         content_welcome()
@@ -143,7 +150,7 @@ def content_sidebar():
         content_2023()
     if selected_tab =="Comparison between the two dataset":
         content_comparison()
-    if selected_tab =="New style":
+    if selected_tab =="New style of chart":
         content_new_style()
 
 
@@ -175,7 +182,7 @@ Data Filters: Tailor your exploration by applying filters based on keywords, dom
     st.write("## Join Us on this Journey")
     st.write("""Embark on a captivating exploration of the internet's history. Whether you are a researcher, data enthusiast, or simply curious about the evolution of the digital landscape, our Web Data Time Travel Demo promises a unique and enlightening experience.""")
     st.write("## Begin Your Journey")
-    st.write("""Click the Summary menu in the side to commence your exploration of Common Crawl data across time. Uncover the past, understand the present, and glimpse into the future of the World Wide Web.""")
+    st.write("""Click on the Summary menu in the side to commence your exploration of Common Crawl data across time. Uncover the past, understand the present, and glimpse into the future of the World Wide Web.""")
 
 def content_new_style():
     loadTreemapImage ="assets/images/Treemap.png"
