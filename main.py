@@ -89,34 +89,52 @@ def getCheminForImage(nomfichier):
     # Utiliser split pour séparer la chaîne en fonction de ":"
     parts = regexSelect.split(":")
 
+
     # Concaténer les parties avec le format souhaité
+
     result = f"assets/plots/{parts[1]}_plot.svg"
     return result
 
 # 
 target_classes = []
+# for file in glob.glob("assets/plots/*.svg"):
+#     # Utilisez split pour séparer le chemin du fichier
+#     parts = file.split("/")
+    
+#     # Extrait le premier élément après "assets"
+#     fname = parts[1]  # parts[0] est "assets", parts[1] est "plots"
+
+#     parts2 = fname.split("plots")
+#     # Extrait le premier élément après "plots"
+#     newFname =parts2[1]
+
+#     # Utiliser split pour séparer la chaîne en fonction de "\"
+#     parts = newFname.split("\\")
+
+#     # Concaténer les parties avec "schema:"
+#     newFname ="".join(parts[1:])
+
+#     # Supprime l'extension ".svg"
+#     cname = newFname.split("_plot.svg")[0]
+    
+#     # Ajoute à la liste avec le préfixe "schema:"
+#     target_classes.append(f"schema:{cname}")
+
 for file in glob.glob("assets/plots/*.svg"):
     # Utilisez split pour séparer le chemin du fichier
     parts = file.split("/")
-    
-    # Extrait le premier élément après "assets"
-    fname = parts[1]  # parts[0] est "assets", parts[1] est "plots"
 
-    parts2 = fname.split("plots")
+    fname = parts[2] 
+    parts2 = fname.split(".")
     # Extrait le premier élément après "plots"
-    newFname =parts2[1]
+    newFname =parts2[0]
 
-    # Utiliser split pour séparer la chaîne en fonction de "\"
-    parts = newFname.split("\\")
-
-    # Concaténer les parties avec "schema:"
-    newFname ="".join(parts[1:])
-
-    # Supprime l'extension ".svg"
-    cname = newFname.split("_plot.svg")[0]
-    
-    # Ajoute à la liste avec le préfixe "schema:"
+    cname = newFname.split("_plot")[0]
+    # if cname != "Intangible":
     target_classes.append(f"schema:{cname}")
+    
+    
+
 
 # sunburst
 data_plotly_sunburst = {"ids": [], "names": [], "parents": [], "values": []}
@@ -126,7 +144,10 @@ with open("data/count.json", "r") as file:
     itemlist = sorted(item_generator(parsed_json, "children"), key=lambda x: x[0])
 
     nodelist = []
+    print(nodelist)
     for generation, parent in itemlist:
+        if "schema:Intangible" in json.dumps(parent):
+            continue
         if parent.get("value") is None:
             parent["value"] = 0
 

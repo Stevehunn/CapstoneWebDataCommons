@@ -30,14 +30,27 @@ def content_2022(data_plotly_sunburst, target_classes):
         In the following sunburst plot, the count of typed entities is displayed through the 'value' attribute.
         """
     )
-
-    figure = px.sunburst(
-        data_plotly_sunburst,
-        ids="ids",
-        names="names",
-        parents="parents",
-        values="values",
-    )
+    
+    # figure = px.sunburst(
+    #     data_plotly_sunburst,
+    #     ids="ids",
+    #     names="names",
+    #     parents="parents",
+    #     values="values",
+    # )
+    figure= px.treemap(
+            data_plotly_sunburst,
+            ids="ids",
+            names="names",
+            parents="parents",
+            values="values",
+            # color= "values",
+            # color_continuous_scale="YlOrRd"
+            color= "values",
+            color_continuous_scale=px.colors.diverging.Picnic,  # Choose a diverging color scale
+           
+            
+        )
     style = {
         "padding": 10,
         "width": "100%",
